@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.venv/
+
+# Env
+.env
+
+# Data
+data/
+keys/
+
+# Airflow
+airflow/logs/
+airflow/airflow.db*
+airflow/*.cfg
+
+# dbt
+dbt/**/target/
+dbt/**/logs/
+
+# OS
+.DS_Store

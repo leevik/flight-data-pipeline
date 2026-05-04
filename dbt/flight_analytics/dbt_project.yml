@@ -1,0 +1,16 @@
+name: flight_analytics
+version: "1.0"
+config-version: 2
+
+profile: flight_analytics
+
+model-paths: ["models"]
+
+models:
+  flight_analytics:
+    staging:
+      +schema: staging
+      +materialized: view
+    marts:
+      +schema: analytics
+      +materialized: view

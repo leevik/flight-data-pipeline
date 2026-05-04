@@ -1,0 +1,44 @@
+services:
+  flight-ingestion:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finnair-flight-ingestion
+    env_file:
+      - .env
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ~/.aws:/root/.aws:ro
+      - ./dbt/flight_analytics:/app/dbt
+      - ./keys:/app/keys:ro
+    working_dir: /app
+    command: python -m src.extract.fetch_flights
+
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: flight-airflow
+    env_file:
+      - .env
+    environment:
+      AIRFLOW_HOME: /app/airflow
+      AIRFLOW__CORE__DAGS_FOLDER: /app/airflow/dags
+      AIRFLOW__CORE__EXECUTOR: SequentialExecutor
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////app/airflow/airflow.db
+      AIRFLOW__WEBSERVER__SECRET_KEY: dev_secret_key
+      PYTHONPATH: /app
+    volumes:
+      - ./src:/app/src
+      - ./data:/app/data
+      - ./dbt/flight_analytics:/app/dbt
+      - ./keys:/app/keys:ro
+      - ./airflow:/app/airflow
+      - ~/.aws:/root/.aws:ro
+    working_dir: /app
+    ports:
+      - "8080:8080"
+    command: airflow standalone

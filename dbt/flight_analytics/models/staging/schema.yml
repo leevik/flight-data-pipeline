@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: raw
+    database: FLIGHT_DATA_DEMO
+    schema: RAW
+    tables:
+      - name: flights
+
+models:
+  - name: stg_flights
+    columns:
+      - name: icao24
+        tests:
+          - not_null
+      - name: callsign
+        tests:
+          - not_null
+      - name: departure_airport
+        tests:
+          - not_null
+      - name: arrival_airport

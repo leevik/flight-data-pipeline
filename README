@@ -1,0 +1,158 @@
+# Flight Data ELT Pipeline (Airflow + Snowflake + dbt)
+
+## Overview
+This project implements an end-to-end ELT (Extract, Load, Transform) data pipeline for flight data using modern data engineering tools.
+
+The pipeline:
+1. Extracts flight data from the OpenSky API  
+2. Stores raw data locally and uploads it to AWS S3
+3. Loads data into Snowflake (raw layer)  
+4. Transforms data using dbt (staging and marts layers)  
+5. Validates data quality with dbt tests  
+6. Orchestrates the workflow using Apache Airflow  
+7. Visualizes results in Power BI  
+
+---
+
+## Tech Stack
+
+Python, Apache Airflow, Snowflake, dbt, AWS S3, Docker, Power BI
+
+## Architecture
+OpenSky API <-- Python (Extract) --> Local JSON --> AWS S3 --> Snowflake (Raw) --> dbt (STAGING -> MARTS) --> Power BI
+
+## Project Structure
+
+airflow/
+  dags/
+
+dbt/
+  flight_analytics/
+
+src/
+  extract/
+  load/
+
+data/
+keys/
+
+docker-compose.yml  
+Dockerfile  
+requirements.txt  
+.env.example  
+README.md
+
+## Setup
+
+### 1. Clone the repository
+
+```bash
+git clone <your-repo-url>
+cd flight-data-pipeline
+```
+
+### 2. Configure environment variables
+
+Copy the example file:
+
+```bash
+cp .env.example .env
+```
+
+Fill in the required values:
+- Snowflake account and user
+- AWS credentials and S3 bucket
+- OpenSky API credentials
+
+### 3. Configure dbt profile
+
+```bash
+cp dbt/flight_analytics/profiles.yml.example dbt/flight_analytics/profiles.yml
+```
+
+### 4. Add Snowflake private key
+
+Place your private key file in:
+
+```
+keys/dbt_rsa_key.p8
+```
+
+Ensure the path matches the value in your `.env` file.
+
+### 5. Start the services
+
+```bash
+docker compose up --build
+```
+
+### 6. Access Airflow
+
+Open in browser:
+
+```
+http://localhost:8080
+```
+
+Default credentials:
+Check password from logs
+
+```
+username: admin
+password: <check logs>
+```
+
+## Running the Pipeline
+
+If services are already built, you can start only Airflow:
+
+```bash
+docker compose up airflow
+```
+Open in browser:
+```
+http://localhost:8080
+```
+Default credentials:
+Check password from logs
+```
+username: admin
+password: <check logs>
+
+### Trigger the pipeline
+
+1. Navigate to the DAGs page  
+2. Find the DAG named:
+
+```
+flight_data_pipeline
+```
+
+3. Enable the DAG (toggle switch)  
+4. Click "Trigger DAG"
+
+---
+
+### Pipeline steps
+
+The pipeline executes the following tasks:
+
+```
+fetch_flights → upload_to_s3 → load_to_snowflake → dbt_run → dbt_test
+```
+
+- **fetch_flights**: Extracts flight data from OpenSky API  
+- **upload_to_s3**: Uploads JSON data to AWS S3  
+- **load_to_snowflake**: Loads raw data into Snowflake  
+- **dbt_run**: Transforms data into staging and marts models  
+- **dbt_test**: Runs data quality checks  
+
+---
+
+## Power BI
+Connect snowflake to Power BI with same keypair & username you used earlier
+
+Example visualizations:
+    2 bar charts:
+        1. X-axis arrival airport & Y-axis flight count
+        2. X-axis arrival airport & Y-axis avg flight duration

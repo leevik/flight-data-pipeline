@@ -1,0 +1,12 @@
+flight_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: snowflake
+      account: "{{ env_var('SNOWFLAKE_ACCOUNT') }}"
+      user: "{{ env_var('SNOWFLAKE_USER') }}"
+      role: ACCOUNTADMIN
+      database: FLIGHT_DATA_DEMO
+      warehouse: COMPUTE_WH
+      schema: PUBLIC
+      private_key_path: /app/keys/dbt_rsa_key.p8
