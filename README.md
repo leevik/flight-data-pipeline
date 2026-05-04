@@ -1,7 +1,7 @@
 # Flight Data ELT Pipeline (Airflow + Snowflake + dbt)
 
 ## Overview
-This project implements an end-to-end ELT (Extract, Load, Transform) data pipeline for flight data using modern data engineering tools.
+Data pipeline for flight data
 
 The pipeline:
 1. Extracts flight data from the OpenSky API  
@@ -20,27 +20,6 @@ Python, Apache Airflow, Snowflake, dbt, AWS S3, Docker, Power BI
 
 ## Architecture
 OpenSky API <-- Python (Extract) --> Local JSON --> AWS S3 --> Snowflake (Raw) --> dbt (STAGING -> MARTS) --> Power BI
-
-## Project Structure
-
-airflow/
-  dags/
-
-dbt/
-  flight_analytics/
-
-src/
-  extract/
-  load/
-
-data/
-keys/
-
-docker-compose.yml  
-Dockerfile  
-requirements.txt  
-.env.example  
-README.md
 
 ## Setup
 
@@ -118,6 +97,7 @@ Check password from logs
 ```
 username: admin
 password: <check logs>
+```
 
 ### Trigger the pipeline
 
