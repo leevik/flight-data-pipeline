@@ -1,7 +1,7 @@
 # Flight Data ELT Pipeline (Airflow + Snowflake + dbt)
 
 ## Overview
-<b>These instructions do not cover every step to recreate this pipeline.</b>
+<b>These instructions do not cover every step to recreate this pipeline.</b><br/>
 This tech stack was used because they were requirements in a Data engineer job ad.
 This pipeline utilizes AWS S3 which has costs and requires configurations not shown here.<br/>
 Snowflake requires subscription also, but it offers free trial which was used in this project.<br/>
