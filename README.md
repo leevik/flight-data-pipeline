@@ -1,6 +1,12 @@
 # Flight Data ELT Pipeline (Airflow + Snowflake + dbt)
 
 ## Overview
+These instructions do not cover every step to recreate this pipeline. This pipeline utilizes AWS s3 which has costs. 
+Snowflake requires subscription also, but I was using it for the first time so I created this pipeline during free trial.
+I chose OpenSky API because it was free. 
+This project could be created without Snowflake and AWS S3 with some other free solutions like MinIO instead of S3 and PostgreSQL instead of Snowflake. I wanted to test Snowflake since it is in lot of data engineer job requirements.
+Apache Airflow is also a tool I have seen used a lot so I used it here even though it was overkill for this project.
+
 Data pipeline for flight data
 
 The pipeline:
@@ -26,7 +32,7 @@ OpenSky API <-- Python (Extract) --> Local JSON --> AWS S3 --> Snowflake (Raw) -
 ### 1. Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/leevik/flight-data-pipeline.git
 cd flight-data-pipeline
 ```
 
